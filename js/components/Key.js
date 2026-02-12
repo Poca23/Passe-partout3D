@@ -67,10 +67,17 @@ export class Key {
   }
 
   createShaft() {
-    const { length, radius } = CONFIG.key.shaft;
+    const shaftLength = CONFIG.key.shaft.length;
+    const shaftRadius = CONFIG.key.shaft.radius;
+    const headRadius = CONFIG.key.head.radius;
     const { metalness, roughness } = CONFIG.key.material;
 
-    const geometry = new THREE.CylinderGeometry(radius, radius, length, 16);
+    const geometry = new THREE.CylinderGeometry(
+      shaftRadius,
+      shaftRadius,
+      shaftLength,
+      32,
+    );
     const material = new THREE.MeshStandardMaterial({
       color: 0xffffff,
       metalness,
@@ -79,7 +86,7 @@ export class Key {
 
     this.parts.shaft = new THREE.Mesh(geometry, material);
     this.parts.shaft.rotation.z = Math.PI / 2;
-    this.parts.shaft.position.x = length / 2;
+    this.parts.shaft.position.x = headRadius + shaftLength / 2;
     this.parts.shaft.castShadow = true;
     this.group.add(this.parts.shaft);
   }
@@ -88,11 +95,13 @@ export class Key {
     const { count, height, width, depth, spacing } = CONFIG.key.teeth;
     const { metalness, roughness } = CONFIG.key.material;
     const shaftLength = CONFIG.key.shaft.length;
+    const headRadius = CONFIG.key.head.radius;
 
-    const geometry = new THREE.BoxGeometry(width, height, depth);
-    const startX = shaftLength * 0.3;
+    const totalTeethWidth = (count - 1) * spacing;
+    const startX = headRadius + (shaftLength - totalTeethWidth) / 1.5;
 
     for (let i = 0; i < count; i++) {
+      const geometry = new THREE.BoxGeometry(width, height, depth);
       const material = new THREE.MeshStandardMaterial({
         color: 0xffffff,
         metalness,
@@ -101,7 +110,7 @@ export class Key {
 
       const tooth = new THREE.Mesh(geometry, material);
 
-      const isFirstOrLast = i === count - 1;
+      const isFirstOrLast = i === 0 || i === count - 1;
       const heightMultiplier = isFirstOrLast ? 1.75 : 0.5 + Math.random() * 0.5;
       const toothHeight = height * heightMultiplier;
 
