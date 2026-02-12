@@ -29,15 +29,20 @@ export const CONFIG = {
       depth: 0.1,
       spacing: 0.5,
     },
-    material: { metalness: 0.8, roughness: 0.2 },
-    rotation: { speed: 0.02 },
+    material: {
+      metalness: 0.0,
+      roughness: 1.0,
+    },
+    rotation: {
+      speed: -0.015,
+    },
     position: { x: 0, y: 0, z: 0 },
   },
 
   colors: {
     speed: 0.5,
-    saturation: 100,
-    lightness: 50,
+    saturation: 70,
+    lightness: 45,
   },
 
   lights: {

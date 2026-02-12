@@ -12,13 +12,41 @@ export class Key {
     this.createHead();
     this.createShaft();
     this.createTeeth();
-    
+
     this.group.position.set(
       CONFIG.key.position.x,
       CONFIG.key.position.y,
-      CONFIG.key.position.z
+      CONFIG.key.position.z,
     );
     this.group.rotation.y = Math.PI / 4;
+  }
+
+  createWoodTexture(colorBase) {
+    const canvas = document.createElement("canvas");
+    canvas.width = 512;
+    canvas.height = 512;
+    const ctx = canvas.getContext("2d");
+
+    ctx.fillStyle = colorBase;
+    ctx.fillRect(0, 0, 512, 512);
+
+    for (let i = 0; i < 80; i++) {
+      const x = Math.random() * 512;
+      const width = 2 + Math.random() * 4;
+      const opacity = 0.1 + Math.random() * 0.2;
+
+      ctx.strokeStyle = `rgba(0, 0, 0, ${opacity})`;
+      ctx.lineWidth = width;
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x + (Math.random() - 0.5) * 50, 512);
+      ctx.stroke();
+    }
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    return texture;
   }
 
   createHead() {
@@ -62,23 +90,26 @@ export class Key {
     const shaftLength = CONFIG.key.shaft.length;
 
     const geometry = new THREE.BoxGeometry(width, height, depth);
-    const material = new THREE.MeshStandardMaterial({
-      color: 0xffffff,
-      metalness,
-      roughness,
-    });
-
     const startX = shaftLength * 0.3;
 
     for (let i = 0; i < count; i++) {
+      const material = new THREE.MeshStandardMaterial({
+        color: 0xffffff,
+        metalness,
+        roughness,
+      });
+
       const tooth = new THREE.Mesh(geometry, material);
-      const toothHeight = height * (0.5 + Math.random() * 0.5);
-      
+
+      const isFirstOrLast = i === count - 1;
+      const heightMultiplier = isFirstOrLast ? 1.75 : 0.5 + Math.random() * 0.5;
+      const toothHeight = height * heightMultiplier;
+
       tooth.scale.y = toothHeight / height;
       tooth.position.set(
         startX + i * spacing,
         -CONFIG.key.shaft.radius - toothHeight / 2,
-        0
+        0,
       );
       tooth.castShadow = true;
       this.parts.teeth.push(tooth);
@@ -91,26 +122,51 @@ export class Key {
   }
 
   animate() {
-    // Rotation 360° continue
     this.group.rotation.z += CONFIG.key.rotation.speed;
 
-    // Animation des couleurs (cycle HSL)
     this.hue += CONFIG.colors.speed;
     if (this.hue > 360) this.hue = 0;
 
     const color = new THREE.Color();
-    
-    // Tête avec hue décalé de 120°
-    color.setHSL(this.hue / 360, 1, 0.5);
-    if (this.parts.head) this.parts.head.material.color.copy(color);
+    const { saturation, lightness } = CONFIG.colors;
 
-    // Corps avec hue décalé de 240°
-    color.setHSL((this.hue + 120) / 360, 1, 0.5);
-    if (this.parts.shaft) this.parts.shaft.material.color.copy(color);
+    const hslToHex = (h, s, l) => {
+      color.setHSL(h / 360, s / 100, l / 100);
+      return "#" + color.getHexString();
+    };
 
-    // Dents avec hue décalé de 360° (même que la tête)
+    const headColor = hslToHex(this.hue, saturation, lightness);
+    if (this.parts.head) {
+      if (!this.parts.head.material.map) {
+        this.parts.head.material.map = this.createWoodTexture(headColor);
+        this.parts.head.material.needsUpdate = true;
+      }
+      this.parts.head.material.color.copy(color);
+    }
+
+    const shaftColor = hslToHex(this.hue + 30, saturation, lightness);
+    color.setHSL((this.hue + 30) / 360, saturation / 100, lightness / 100);
+    if (this.parts.shaft) {
+      if (!this.parts.shaft.material.map) {
+        this.parts.shaft.material.map = this.createWoodTexture(shaftColor);
+        this.parts.shaft.material.needsUpdate = true;
+      }
+      this.parts.shaft.material.color.copy(color);
+    }
+
     this.parts.teeth.forEach((tooth, i) => {
-      color.setHSL((this.hue + i * 60) / 360, 1, 0.5);
+      const offset = 60 + i * 10;
+      const toothColor = hslToHex(this.hue + offset, saturation, lightness);
+      color.setHSL(
+        (this.hue + offset) / 360,
+        saturation / 100,
+        lightness / 100,
+      );
+
+      if (!tooth.material.map) {
+        tooth.material.map = this.createWoodTexture(toothColor);
+        tooth.material.needsUpdate = true;
+      }
       tooth.material.color.copy(color);
     });
   }
@@ -118,7 +174,10 @@ export class Key {
   dispose() {
     this.group.traverse((child) => {
       if (child.geometry) child.geometry.dispose();
-      if (child.material) child.material.dispose();
+      if (child.material) {
+        if (child.material.map) child.material.map.dispose();
+        child.material.dispose();
+      }
     });
   }
 }
