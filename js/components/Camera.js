@@ -3,6 +3,7 @@ import CONFIG from "../config.js";
 export class Camera {
   constructor(aspect) {
     this.camera = null;
+    this.angle = 0;
     this.init(aspect);
   }
 
@@ -21,6 +22,20 @@ export class Camera {
   updateAspect(width, height) {
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
+  }
+
+  animate() {
+    if (!CONFIG.camera.rotation.enabled) return;
+
+    const { speed, radius, height } = CONFIG.camera.rotation;
+
+    this.angle += speed * 0.01;
+
+    this.camera.position.x = Math.cos(this.angle) * radius;
+    this.camera.position.z = Math.sin(this.angle) * radius;
+    this.camera.position.y = height;
+
+    this.camera.lookAt(0, 0, 0);
   }
 
   setPosition(x, y, z) {

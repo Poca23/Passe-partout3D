@@ -11,6 +11,12 @@ export const CONFIG = {
     near: 0.1,
     far: 1000,
     position: { x: 3, y: 2, z: 5 },
+    rotation: {
+      enabled: true,
+      speed: 0.3,
+      radius: 6,
+      height: 2,
+    },
   },
 
   key: {

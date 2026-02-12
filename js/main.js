@@ -131,6 +131,10 @@ waitForThree().then(async () => {
 
       const elapsedTime = this.clock.getElapsedTime();
 
+      if (this.camera) {
+        this.camera.animate();
+      }
+
       if (this.key) {
         this.key.animate();
       }
@@ -153,7 +157,9 @@ waitForThree().then(async () => {
         const info = this.renderer.getInfo();
 
         console.log(`FPS: ${fps} | Frames: ${this.stats.frameCount}`);
-        console.log(`Triangles: ${info.render.triangles} | Calls: ${info.render.calls}`);
+        console.log(
+          `Triangles: ${info.render.triangles} | Calls: ${info.render.calls}`,
+        );
       }
     }
 

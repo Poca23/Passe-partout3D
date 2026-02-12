@@ -1,6 +1,6 @@
 # 🌈 Passe-partout - Clé 3D Multicolore
 
-Un projet 3D interactif créé avec Three.js qui affiche une clé multicolore tournant à 360° en continu.
+Un projet 3D interactif créé avec Three.js qui affiche une clé multicolore tournant à 360° en continu avec une caméra orbitale.
 
 ## 🎯 Description
 
@@ -10,6 +10,7 @@ Ce projet présente une clé 3D réaliste avec :
 - Un corps cylindrique
 - Des dents de clé avec hauteurs variables
 - **Rotation continue à 360°**
+- **Caméra tournant autour de la clé**
 - **Animation de couleurs arc-en-ciel**
 - Éclairage dynamique
 
@@ -62,6 +63,7 @@ passe-partout/
 
 ✅ Clé 3D réaliste avec matériau métallique  
 ✅ **Rotation infinie à 360°**  
+✅ **Caméra orbitale automatique**  
 ✅ **Couleurs animées arc-en-ciel (HSL)**  
 ✅ Éclairage ambiant, directionnel et ponctuel  
 ✅ Design responsive (mobile/tablet/desktop)  
@@ -92,10 +94,18 @@ Modifiez `js/config.js` :
 key: {
   rotation: { speed: 0.02 },  // Vitesse de rotation (0.01-0.05)
 },
+camera: {
+  rotation: {
+    enabled: true,            // Activer/désactiver rotation caméra
+    speed: 0.3,               // Vitesse rotation (0.1-1)
+    radius: 6,                // Distance de la caméra (4-10)
+    height: 2,                // Hauteur de la caméra (0-5)
+  },
+},
 colors: {
-  speed: 0.5,                  // Vitesse changement couleur (0.1-2)
-  saturation: 100,             // Saturation (0-100)
-  lightness: 50,               // Luminosité (0-100)
+  speed: 0.5,                 // Vitesse changement couleur (0.1-2)
+  saturation: 100,            // Saturation (0-100)
+  lightness: 50,              // Luminosité (0-100)
 }
 ```
 
@@ -117,10 +127,20 @@ key: {
 }
 ```
 
-### Arc-en-ciel rapide
+### Caméra fixe
 
 ```javascript
-colors: { speed: 2, saturation: 100, lightness: 60 }
+camera: {
+  rotation: {
+    enabled: false;
+  }
+}
+```
+
+### Vue rapprochée
+
+```javascript
+camera: { rotation: { radius: 4, height: 1 } }
 ```
 
 ## 🎓 Concepts Three.js
@@ -129,6 +149,7 @@ colors: { speed: 2, saturation: 100, lightness: 60 }
 - Groupement d'objets (THREE.Group)
 - Animation HSL pour transitions de couleurs
 - Rotation continue (pas de limite d'angle)
+- Caméra orbitale circulaire
 - Responsive design 3D
 
 ## 📄 Licence
@@ -137,6 +158,6 @@ Libre d'utilisation à des fins pédagogiques.
 
 ## 👤 Auteur
 
-Créé dans le cadre de l'apprentissage de Three.js | CND - Web Is Yours
+Créé dans le cadre de l'apprentissage de Three.js | CND - Web Is Yours | Février 2026
 
 ---
