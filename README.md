@@ -1,17 +1,17 @@
-# 🌈 Passe-partout - Clé 3D Multicolore
+# 🌈 Passe-partout - Clé 3D Arc-en-ciel
 
-Un projet 3D interactif créé avec Three.js qui affiche une clé multicolore tournant à 360° en continu avec une caméra orbitale.
+Un projet 3D interactif créé avec Three.js qui affiche une clé en bois multicolore avec double rotation à 360°.
 
 ## 🎯 Description
 
-Ce projet présente une clé 3D réaliste avec :
+Ce projet présente une clé 3D en bois avec :
 
 - Une tête en forme d'anneau (torus)
 - Un corps cylindrique
-- Des dents de clé avec hauteurs variables
-- **Rotation continue à 360°**
-- **Caméra tournant autour de la clé**
-- **Animation de couleurs arc-en-ciel**
+- Des dents de clé avec hauteurs variables (première et dernière 1.75x plus grandes)
+- **Texture bois procédurale avec veines**
+- **Double rotation infinie** (clé tourne sur elle-même + caméra orbitale)
+- **Dégradé arc-en-ciel harmonieux**
 - Éclairage dynamique
 
 ## 🚀 Installation
@@ -40,7 +40,6 @@ npx http-server
 ```
 passe-partout/
 ├── index.html
-├── .gitignore
 ├── css/
 │   ├── reset.css
 │   ├── variables.css
@@ -61,30 +60,28 @@ passe-partout/
 
 ## ✨ Fonctionnalités
 
-✅ Clé 3D réaliste avec matériau métallique  
-✅ **Rotation infinie à 360°**  
-✅ **Caméra orbitale automatique**  
-✅ **Couleurs animées arc-en-ciel (HSL)**  
-✅ Éclairage ambiant, directionnel et ponctuel  
-✅ Design responsive (mobile/tablet/desktop)  
-✅ Architecture modulaire ES6+  
-✅ Performance optimisée (~60 FPS)  
-✅ Cleanup mémoire automatique
+✅ Clé 3D en bois avec texture procédurale  
+✅ **Double rotation 360°** (clé sens inverse de la caméra)  
+✅ **Dents graduées** (extrémités plus grandes)  
+✅ **Dégradé de couleurs harmonieux** (30° entre tête/corps, 10° entre dents)  
+✅ Caméra orbitale automatique  
+✅ Design responsive  
+✅ Performance optimisée (~60 FPS)
 
 ## 🌈 Animation des couleurs
 
-- **Système HSL** : Transition fluide sur 360° de teinte
+- **Système HSL** : Transition fluide sur 360°
 - **Tête** : Couleur de base
-- **Corps** : Décalage de +120°
-- **Dents** : Décalage progressif de 60° par dent
-- **Cycle complet** : ~7 secondes
+- **Corps** : +30°
+- **Dents** : +60°, +70°, +80°, +90° (progression harmonieuse)
+- **Cycle complet** : ~12 secondes
 
 ## 🛠️ Technologies
 
 - **Three.js** r150+ - Rendu 3D WebGL
 - **JavaScript ES6+** - Modules natifs
-- **CSS3** - Variables, Grid, Flexbox
-- **HTML5** - Canvas, Responsive
+- **Canvas 2D** - Génération texture bois
+- **CSS3** - Variables, Responsive
 
 ## ⚙️ Configuration
 
@@ -92,49 +89,37 @@ Modifiez `js/config.js` :
 
 ```javascript
 key: {
-  rotation: { speed: 0.02 },  // Vitesse de rotation (0.01-0.05)
+  rotation: { speed: -0.015 },  // Rotation clé (négatif = sens inverse)
 },
 camera: {
   rotation: {
-    enabled: true,            // Activer/désactiver rotation caméra
-    speed: 0.3,               // Vitesse rotation (0.1-1)
-    radius: 6,                // Distance de la caméra (4-10)
-    height: 2,                // Hauteur de la caméra (0-5)
+    speed: 0.3,                  // Vitesse caméra orbitale
+    radius: 6,                   // Distance (4-10)
   },
 },
 colors: {
-  speed: 0.5,                 // Vitesse changement couleur (0.1-2)
-  saturation: 100,            // Saturation (0-100)
-  lightness: 50,              // Luminosité (0-100)
+  speed: 0.5,                    // Vitesse transition (0.1-2)
+  saturation: 70,                // Saturation (0-100)
+  lightness: 45,                 // Luminosité (0-100)
 }
 ```
 
 ## 🎨 Personnalisation
 
-### Couleurs pastel
+### Couleurs vives
 
 ```javascript
-colors: { speed: 0.3, saturation: 50, lightness: 70 }
+colors: { saturation: 100, lightness: 60 }
 ```
 
-### Rotation rapide
+### Rotation synchronisée
 
 ```javascript
 key: {
   rotation: {
-    speed: 0.05;
+    speed: 0.015;
   }
-}
-```
-
-### Caméra fixe
-
-```javascript
-camera: {
-  rotation: {
-    enabled: false;
-  }
-}
+} // Même sens que caméra
 ```
 
 ### Vue rapprochée
@@ -145,12 +130,11 @@ camera: { rotation: { radius: 4, height: 1 } }
 
 ## 🎓 Concepts Three.js
 
-- Géométries composites (Torus, Cylinder, Box)
-- Groupement d'objets (THREE.Group)
-- Animation HSL pour transitions de couleurs
-- Rotation continue (pas de limite d'angle)
+- Géométries composites
+- Textures procédurales (Canvas)
+- Double rotation indépendante
+- Dégradé HSL harmonieux
 - Caméra orbitale circulaire
-- Responsive design 3D
 
 ## 📄 Licence
 
@@ -159,5 +143,3 @@ Libre d'utilisation à des fins pédagogiques.
 ## 👤 Auteur
 
 Créé dans le cadre de l'apprentissage de Three.js | CND - Web Is Yours | Février 2026
-
----
