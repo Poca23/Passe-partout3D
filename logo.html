@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logo Passe-partout 3D</title>
+    <style>
+        body {
+            margin: 0;
+            background: #1a1a2e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #logo {
+            width: 400px;
+            height: 400px;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="logo"></canvas>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        const canvas = document.getElementById('logo');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({
+            canvas,
+            antialias: true,
+            alpha: true
+        });
+
+        renderer.setSize(400, 400);
+        renderer.shadowMap.enabled = true;
+        camera.position.set(3, 2, 5);
+        camera.lookAt(0, 0, 0);
+
+        // Lumières
+        scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+        const light = new THREE.DirectionalLight(0xffffff, 1);
+        light.position.set(5, 5, 5);
+        light.castShadow = true;
+        scene.add(light);
+
+        // Groupe clé
+        const key = new THREE.Group();
+
+        // Tête (torus rouge)
+        const head = new THREE.Mesh(
+            new THREE.TorusGeometry(0.5, 0.15, 16, 32),
+            new THREE.MeshStandardMaterial({
+                color: 0xcc3333,
+                metalness: 0.3,
+                roughness: 0.4
+            })
+        );
+        head.castShadow = true;
+        key.add(head);
+
+        // Corps (cylindre orange) - décalé vers la droite
+        const shaft = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.12, 0.12, 2.5, 16),
+            new THREE.MeshStandardMaterial({
+                color: 0xd4691e,
+                metalness: 0.3,
+                roughness: 0.4
+            })
+        );
+        shaft.rotation.z = Math.PI / 2;
+        shaft.position.x = 1.9; // Décalé de 0.5 → 1.9
+        shaft.castShadow = true;
+        key.add(shaft);
+
+        // Dents (vert progressif) - décalées aussi
+        const colors = [0x2d5016, 0x4a7c2c, 0x6ba83e, 0x8bc34a];
+        for (let i = 0; i < 4; i++) {
+            const height = (i === 0 || i === 3) ? 0.35 : 0.15;
+            const tooth = new THREE.Mesh(
+                new THREE.BoxGeometry(0.15, height, 0.1),
+                new THREE.MeshStandardMaterial({
+                    color: colors[i],
+                    metalness: 0.3,
+                    roughness: 0.4
+                })
+            );
+            tooth.position.set(1.15 + i * 0.5, -0.12 - height / 2, 0); // Décalé de 0.75 → 1.15
+            tooth.castShadow = true;
+            key.add(tooth);
+        }
+
+        // Orientation
+        key.rotation.set(0.3, 0.5, 0);
+        scene.add(key);
+
+        // Rendu
+        renderer.render(scene, camera);
+    </script>
+</body>
+
+</html>
