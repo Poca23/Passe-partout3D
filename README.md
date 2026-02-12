@@ -1,36 +1,45 @@
-# 🔑 Passe-partout - Clé 3D Rotative
+# 🌈 Passe-partout - Clé 3D Multicolore
 
-Un projet 3D élégant créé avec Three.js qui affiche une clé dorée tournant comme dans une serrure.
+Un projet 3D interactif créé avec Three.js qui affiche une clé multicolore tournant à 360° en continu.
 
 ## 🎯 Description
 
-Ce projet présente une clé 3D réaliste composée de :
+Ce projet présente une clé 3D réaliste avec :
+
 - Une tête en forme d'anneau (torus)
 - Un corps cylindrique
 - Des dents de clé avec hauteurs variables
-- Un mouvement de rotation réaliste (comme dans une serrure)
-- Un éclairage dynamique doré
+- **Rotation continue à 360°**
+- **Animation de couleurs arc-en-ciel**
+- Éclairage dynamique
 
 ## 🚀 Installation
 
 1. Clonez le projet :
+
 ```bash
 git clone [votre-repo]/passe-partout.git
 cd passe-partout
+```
 
-Lancez un serveur local :
+2. Lancez un serveur local :
 
+```bash
 # Python 3
 python -m http.server 8000
 
 # Node.js
 npx http-server
+```
 
-Ouvrez http://localhost:8000
+3. Ouvrez `http://localhost:8000`
 
-📁 Structure
+## 📁 Structure
+
+```
 passe-partout/
 ├── index.html
+├── .gitignore
 ├── css/
 │   ├── reset.css
 │   ├── variables.css
@@ -47,52 +56,87 @@ passe-partout/
 │   │   └── responsive.js
 │   └── main.js
 └── README.md
-✨ Fonctionnalités
+```
 
-✅ Clé 3D réaliste avec matériau métallique doré
-✅ Rotation automatique (comme dans une serrure)
-✅ Éclairage ambiant, directionnel et ponctuel
-✅ Design responsive (mobile/tablet/desktop)
-✅ Architecture modulaire ES6+
-✅ Performance optimisée
+## ✨ Fonctionnalités
+
+✅ Clé 3D réaliste avec matériau métallique  
+✅ **Rotation infinie à 360°**  
+✅ **Couleurs animées arc-en-ciel (HSL)**  
+✅ Éclairage ambiant, directionnel et ponctuel  
+✅ Design responsive (mobile/tablet/desktop)  
+✅ Architecture modulaire ES6+  
+✅ Performance optimisée (~60 FPS)  
 ✅ Cleanup mémoire automatique
 
-🛠️ Technologies
+## 🌈 Animation des couleurs
 
-Three.js r150+ - Rendu 3D WebGL
-JavaScript ES6+ - Modules natifs
-CSS3 - Variables, Grid, Flexbox
-HTML5 - Canvas, Responsive
+- **Système HSL** : Transition fluide sur 360° de teinte
+- **Tête** : Couleur de base
+- **Corps** : Décalage de +120°
+- **Dents** : Décalage progressif de 60° par dent
+- **Cycle complet** : ~7 secondes
 
-🎨 Composants 3D
-Key.js
-Crée la clé en 3 parties :
+## 🛠️ Technologies
 
-Tête : TorusGeometry (anneau)
-Corps : CylinderGeometry (cylindre horizontal)
-Dents : BoxGeometry (4 dents de hauteurs aléatoires)
+- **Three.js** r150+ - Rendu 3D WebGL
+- **JavaScript ES6+** - Modules natifs
+- **CSS3** - Variables, Grid, Flexbox
+- **HTML5** - Canvas, Responsive
 
-Animation
-Rotation sur l'axe Z entre -90° et +90° pour simuler une clé qui tourne dans une serrure.
-📝 Configuration
-Modifiez config.js pour personnaliser :
+## ⚙️ Configuration
 
-Dimensions de la clé
-Couleur (or par défaut : 0xffd700)
-Vitesse de rotation
-Nombre et taille des dents
-Propriétés matériau (metalness, roughness)
+Modifiez `js/config.js` :
 
-🎓 Apprentissage
-Ce projet illustre :
+```javascript
+key: {
+  rotation: { speed: 0.02 },  // Vitesse de rotation (0.01-0.05)
+},
+colors: {
+  speed: 0.5,                  // Vitesse changement couleur (0.1-2)
+  saturation: 100,             // Saturation (0-100)
+  lightness: 50,               // Luminosité (0-100)
+}
+```
 
-Construction de formes 3D complexes
-Groupement d'objets (THREE.Group)
-Matériaux métalliques réalistes
-Animation de rotation
-Architecture composants réutilisables
+## 🎨 Personnalisation
 
-📄 Licence
+### Couleurs pastel
+
+```javascript
+colors: { speed: 0.3, saturation: 50, lightness: 70 }
+```
+
+### Rotation rapide
+
+```javascript
+key: {
+  rotation: {
+    speed: 0.05;
+  }
+}
+```
+
+### Arc-en-ciel rapide
+
+```javascript
+colors: { speed: 2, saturation: 100, lightness: 60 }
+```
+
+## 🎓 Concepts Three.js
+
+- Géométries composites (Torus, Cylinder, Box)
+- Groupement d'objets (THREE.Group)
+- Animation HSL pour transitions de couleurs
+- Rotation continue (pas de limite d'angle)
+- Responsive design 3D
+
+## 📄 Licence
+
 Libre d'utilisation à des fins pédagogiques.
-👤 Auteur
-Créé dans le cadre de l'apprentissage de Three.js
+
+## 👤 Auteur
+
+Créé dans le cadre de l'apprentissage de Three.js | CND - Web Is Yours
+
+---
