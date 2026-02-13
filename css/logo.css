@@ -1,4 +1,3 @@
-/* Logo 3D animé */
 .header__logo {
   display: inline-block;
   width: 48px;
@@ -17,7 +16,6 @@
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }
 
-/* Animation 3D au survol */
 .header__logo:hover {
   animation: rotate3d 2s linear infinite;
 }
@@ -37,7 +35,6 @@
   }
 }
 
-/* Responsive */
 @media (min-width: 768px) {
   .header__logo {
     width: 64px;
