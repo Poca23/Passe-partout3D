@@ -1,0 +1,46 @@
+/* Logo 3D animé */
+.header__logo {
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  margin-right: var(--spacing-sm);
+  vertical-align: middle;
+  transition: transform var(--transition-slow);
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.header__logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Animation 3D au survol */
+.header__logo:hover {
+  animation: rotate3d 2s linear infinite;
+}
+
+@keyframes rotate3d {
+  0% {
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+  }
+  33% {
+    transform: rotateX(360deg) rotateY(0deg) rotateZ(0deg);
+  }
+  66% {
+    transform: rotateX(360deg) rotateY(360deg) rotateZ(0deg);
+  }
+  100% {
+    transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+  }
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  .header__logo {
+    width: 64px;
+    height: 64px;
+  }
+}
